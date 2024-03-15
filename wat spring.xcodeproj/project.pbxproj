@@ -210,11 +210,12 @@
 			};
 			buildConfigurationList = D72269D52BA4BD7300E152D3 /* Build configuration list for PBXProject "wat spring" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = "zh-Hans";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = D72269D12BA4BD7300E152D3;
 			productRefGroup = D72269DB2BA4BD7300E152D3 /* Products */;
