@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import AppKit
 
 @main
 struct wat_springApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()

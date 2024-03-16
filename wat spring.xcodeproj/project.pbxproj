@@ -14,6 +14,7 @@
 		D72269F02BA4BD7400E152D3 /* wat_springTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269EF2BA4BD7400E152D3 /* wat_springTests.swift */; };
 		D72269FA2BA4BD7400E152D3 /* wat_springUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269F92BA4BD7400E152D3 /* wat_springUITests.swift */; };
 		D72269FC2BA4BD7400E152D3 /* wat_springUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269FB2BA4BD7400E152D3 /* wat_springUITestsLaunchTests.swift */; };
+		D79838892BA4FDE3005C7F9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79838882BA4FDE3005C7F9C /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		D72269F52BA4BD7400E152D3 /* wat springUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wat springUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72269F92BA4BD7400E152D3 /* wat_springUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wat_springUITests.swift; sourceTree = "<group>"; };
 		D72269FB2BA4BD7400E152D3 /* wat_springUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wat_springUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D79838882BA4FDE3005C7F9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				D72269E12BA4BD7400E152D3 /* Assets.xcassets */,
 				D72269E62BA4BD7400E152D3 /* wat_spring.entitlements */,
 				D72269E32BA4BD7400E152D3 /* Preview Content */,
+				D79838882BA4FDE3005C7F9C /* AppDelegate.swift */,
 			);
 			path = "wat spring";
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D79838892BA4FDE3005C7F9C /* AppDelegate.swift in Sources */,
 				D72269E02BA4BD7300E152D3 /* ContentView.swift in Sources */,
 				D72269DE2BA4BD7300E152D3 /* wat_springApp.swift in Sources */,
 			);
@@ -335,7 +339,8 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -398,7 +403,8 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
