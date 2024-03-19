@@ -1,5 +1,5 @@
 
-![](https://github.com/iepn/wet-spring/assets/57232813/78919d3a-2bab-4d71-ae2d-5b9625d21d5a)
+![](https://github.com/iepn/wet-spring/assets/57232813/f48f17f9-66ca-4ac4-9c77-d8a3641d729f)
 
 > [!NOTE]
 > Currently, it's still under development, and you can expect to see a more complete set of features after approximately 400 submissions.
