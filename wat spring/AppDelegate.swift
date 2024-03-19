@@ -1,9 +1,11 @@
 import AppKit
+import CoreLocation
 
-class AppDelegate: NSObject, NSApplicationDelegate {
-    
+class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
+
     var statusBarItem: NSStatusItem?
-    
+    var locationManager: CLLocationManager?
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -20,9 +22,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     button.title = "湿度: \(weather.humidity)%"
                 }
             }
+            
+            locationManager = CLLocationManager()
+            locationManager?.delegate = self
+            locationManager?.startUpdatingLocation()
         }
     }
     
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location) { placemarks, error in
+                if let placemark = placemarks?.first {
+                    print("省级行政区: \(placemark.administrativeArea ?? ""), 地级行政区: \(placemark.locality ?? ""), 县级行政区: \(placemark.subLocality ?? "")")
+                }
+            }
+            manager.stopUpdatingLocation()
+        }
+    }
     
     func fetchWeatherData(completion: @escaping (HourlyData) -> Void) {
         let url = URL(string: "")!
@@ -59,7 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
          tempScore      设 29°C 是最阳光正盛之际
          weatherScore   天气指数
          
-         TODE: 室外温度、室内温度、24 小时状态平均值
+         TODO: 室外温度、室内温度、24 小时状态平均值
         */
         let humidityScore = 100 - abs(Double(weather.humidity)! - 30)
         let tempScore = 100 - abs(Double(weather.temp)! - 29)
