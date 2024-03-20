@@ -5,7 +5,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
 
     var statusBarItem: NSStatusItem?
     var locationManager: CLLocationManager?
-
+    var locality: String?
+    var subLocality: String?
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -15,14 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
             guard let image = NSImage(named: "StatusBar") else { return }
             button.image = image
             
-            // 获取并设置天气数据
-            fetchWeatherData { weather in
-                DispatchQueue.main.async {
-                    let score = self.calculateWeatherScore(weather: weather)
-                    button.title = "湿度: \(weather.humidity)%"
-                }
-            }
-            
+            // location
             locationManager = CLLocationManager()
             locationManager?.delegate = self
             locationManager?.startUpdatingLocation()
@@ -35,7 +30,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
             let geocoder = CLGeocoder()
             geocoder.reverseGeocodeLocation(location) { placemarks, error in
                 if let placemark = placemarks?.first {
-                    print("省级行政区: \(placemark.administrativeArea ?? ""), 地级行政区: \(placemark.locality ?? ""), 县级行政区: \(placemark.subLocality ?? "")")
+                    self.locality = placemark.locality
+                    self.subLocality = placemark.subLocality
+                    
+                    self.fetchWeatherData { weather in
+                        DispatchQueue.main.async {
+                            let score = self.calculateWeatherScore(weather: weather)
+                            self.statusBarItem?.button?.title = "湿度: \(weather.humidity)%"
+                        }
+                    }
                 }
             }
             manager.stopUpdatingLocation()
@@ -43,7 +46,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
     }
     
     func fetchWeatherData(completion: @escaping (HourlyData) -> Void) {
-        let url = URL(string: "")!
+        guard let locality = locality, let subLocality = subLocality else { return }
+        let urlString = "http://localhost:3000/\(locality)/\(subLocality)"
+        guard let url = URL(string: urlString) else { return }
+        
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 do {
