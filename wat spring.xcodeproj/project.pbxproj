@@ -8,12 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		D72269DE2BA4BD7300E152D3 /* wat_springApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269DD2BA4BD7300E152D3 /* wat_springApp.swift */; };
-		D72269E02BA4BD7300E152D3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269DF2BA4BD7300E152D3 /* ContentView.swift */; };
 		D72269E22BA4BD7400E152D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D72269E12BA4BD7400E152D3 /* Assets.xcassets */; };
 		D72269E52BA4BD7400E152D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D72269E42BA4BD7400E152D3 /* Preview Assets.xcassets */; };
 		D72269F02BA4BD7400E152D3 /* wat_springTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269EF2BA4BD7400E152D3 /* wat_springTests.swift */; };
 		D72269FA2BA4BD7400E152D3 /* wat_springUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269F92BA4BD7400E152D3 /* wat_springUITests.swift */; };
 		D72269FC2BA4BD7400E152D3 /* wat_springUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269FB2BA4BD7400E152D3 /* wat_springUITestsLaunchTests.swift */; };
+		D7560E2B2BABFE94000C5302 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72269DF2BA4BD7300E152D3 /* ContentView.swift */; };
+		D773A01A2BABF86B003B416D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D773A0192BABF86B003B416D /* WidgetKit.framework */; };
+		D773A01C2BABF86B003B416D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D773A01B2BABF86B003B416D /* SwiftUI.framework */; };
+		D773A01F2BABF86B003B416D /* widgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A01E2BABF86B003B416D /* widgetBundle.swift */; };
+		D773A0232BABF86B003B416D /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A0222BABF86B003B416D /* AppIntent.swift */; };
+		D773A0252BABF86C003B416D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D773A0242BABF86C003B416D /* Assets.xcassets */; };
+		D773A02B2BABF86C003B416D /* widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D773A0172BABF86B003B416D /* widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D773A02F2BABFB13003B416D /* widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A0202BABF86B003B416D /* widget.swift */; };
 		D79838892BA4FDE3005C7F9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79838882BA4FDE3005C7F9C /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -32,7 +39,28 @@
 			remoteGlobalIDString = D72269D92BA4BD7300E152D3;
 			remoteInfo = "wat spring";
 		};
+		D773A0282BABF86C003B416D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D72269D22BA4BD7300E152D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D773A0162BABF86B003B416D;
+			remoteInfo = widgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D773A02A2BABF86C003B416D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D773A02B2BABF86C003B416D /* widgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D72269DA2BA4BD7300E152D3 /* wat spring.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wat spring.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +74,15 @@
 		D72269F52BA4BD7400E152D3 /* wat springUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wat springUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72269F92BA4BD7400E152D3 /* wat_springUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wat_springUITests.swift; sourceTree = "<group>"; };
 		D72269FB2BA4BD7400E152D3 /* wat_springUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wat_springUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D773A0172BABF86B003B416D /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D773A0192BABF86B003B416D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		D773A01B2BABF86B003B416D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		D773A01E2BABF86B003B416D /* widgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = widgetBundle.swift; sourceTree = "<group>"; };
+		D773A0202BABF86B003B416D /* widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = widget.swift; sourceTree = "<group>"; };
+		D773A0222BABF86B003B416D /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		D773A0242BABF86C003B416D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D773A0262BABF86C003B416D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D773A0272BABF86C003B416D /* widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widget.entitlements; sourceTree = "<group>"; };
 		D79838882BA4FDE3005C7F9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +108,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D773A0142BABF86B003B416D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D773A01C2BABF86B003B416D /* SwiftUI.framework in Frameworks */,
+				D773A01A2BABF86B003B416D /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -80,6 +126,8 @@
 				D72269DC2BA4BD7300E152D3 /* wat spring */,
 				D72269EE2BA4BD7400E152D3 /* wat springTests */,
 				D72269F82BA4BD7400E152D3 /* wat springUITests */,
+				D773A01D2BABF86B003B416D /* widget */,
+				D773A0182BABF86B003B416D /* Frameworks */,
 				D72269DB2BA4BD7300E152D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +138,7 @@
 				D72269DA2BA4BD7300E152D3 /* wat spring.app */,
 				D72269EB2BA4BD7400E152D3 /* wat springTests.xctest */,
 				D72269F52BA4BD7400E152D3 /* wat springUITests.xctest */,
+				D773A0172BABF86B003B416D /* widgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +181,28 @@
 			path = "wat springUITests";
 			sourceTree = "<group>";
 		};
+		D773A0182BABF86B003B416D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D773A0192BABF86B003B416D /* WidgetKit.framework */,
+				D773A01B2BABF86B003B416D /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D773A01D2BABF86B003B416D /* widget */ = {
+			isa = PBXGroup;
+			children = (
+				D773A01E2BABF86B003B416D /* widgetBundle.swift */,
+				D773A0202BABF86B003B416D /* widget.swift */,
+				D773A0222BABF86B003B416D /* AppIntent.swift */,
+				D773A0242BABF86C003B416D /* Assets.xcassets */,
+				D773A0262BABF86C003B416D /* Info.plist */,
+				D773A0272BABF86C003B416D /* widget.entitlements */,
+			);
+			path = widget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -142,10 +213,12 @@
 				D72269D62BA4BD7300E152D3 /* Sources */,
 				D72269D72BA4BD7300E152D3 /* Frameworks */,
 				D72269D82BA4BD7300E152D3 /* Resources */,
+				D773A02A2BABF86C003B416D /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D773A0292BABF86C003B416D /* PBXTargetDependency */,
 			);
 			name = "wat spring";
 			productName = "wat spring";
@@ -188,6 +261,23 @@
 			productReference = D72269F52BA4BD7400E152D3 /* wat springUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		D773A0162BABF86B003B416D /* widgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D773A02E2BABF86C003B416D /* Build configuration list for PBXNativeTarget "widgetExtension" */;
+			buildPhases = (
+				D773A0132BABF86B003B416D /* Sources */,
+				D773A0142BABF86B003B416D /* Frameworks */,
+				D773A0152BABF86B003B416D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = widgetExtension;
+			productName = widgetExtension;
+			productReference = D773A0172BABF86B003B416D /* widgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -209,6 +299,9 @@
 						CreatedOnToolsVersion = 15.1;
 						TestTargetID = D72269D92BA4BD7300E152D3;
 					};
+					D773A0162BABF86B003B416D = {
+						CreatedOnToolsVersion = 15.1;
+					};
 				};
 			};
 			buildConfigurationList = D72269D52BA4BD7300E152D3 /* Build configuration list for PBXProject "wat spring" */;
@@ -228,6 +321,7 @@
 				D72269D92BA4BD7300E152D3 /* wat spring */,
 				D72269EA2BA4BD7400E152D3 /* wat springTests */,
 				D72269F42BA4BD7400E152D3 /* wat springUITests */,
+				D773A0162BABF86B003B416D /* widgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -256,6 +350,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D773A0152BABF86B003B416D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D773A0252BABF86C003B416D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -264,8 +366,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D79838892BA4FDE3005C7F9C /* AppDelegate.swift in Sources */,
-				D72269E02BA4BD7300E152D3 /* ContentView.swift in Sources */,
 				D72269DE2BA4BD7300E152D3 /* wat_springApp.swift in Sources */,
+				D7560E2B2BABFE94000C5302 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +388,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D773A0132BABF86B003B416D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D773A02F2BABFB13003B416D /* widget.swift in Sources */,
+				D773A01F2BABF86B003B416D /* widgetBundle.swift in Sources */,
+				D773A0232BABF86B003B416D /* AppIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -298,6 +410,11 @@
 			isa = PBXTargetDependency;
 			target = D72269D92BA4BD7300E152D3 /* wat spring */;
 			targetProxy = D72269F62BA4BD7400E152D3 /* PBXContainerItemProxy */;
+		};
+		D773A0292BABF86C003B416D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D773A0162BABF86B003B416D /* widgetExtension */;
+			targetProxy = D773A0282BABF86C003B416D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -425,6 +542,7 @@
 		D7226A002BA4BD7400E152D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "wat spring/wat_spring.entitlements";
@@ -450,6 +568,7 @@
 		D7226A012BA4BD7400E152D3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "wat spring/wat_spring.entitlements";
@@ -540,6 +659,62 @@
 			};
 			name = Release;
 		};
+		D773A02C2BABF86C003B416D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = widget/widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = widget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "no.wat-spring.widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D773A02D2BABF86C003B416D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = widget/widget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = widget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "no.wat-spring.widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -575,6 +750,15 @@
 			buildConfigurations = (
 				D7226A062BA4BD7400E152D3 /* Debug */,
 				D7226A072BA4BD7400E152D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D773A02E2BABF86C003B416D /* Build configuration list for PBXNativeTarget "widgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D773A02C2BABF86C003B416D /* Debug */,
+				D773A02D2BABF86C003B416D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
