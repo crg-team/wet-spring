@@ -41,13 +41,66 @@ struct widgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+        ZStack {
+            Color.white
 
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+            VStack(alignment: .leading) {
+                    Image("WidgetBackground")
+                        .frame(height: 49.18)
+                        .foregroundColor(.white)
+                    Text("现在开窗体验")
+                        .font(Font.system(size: 12, weight: .bold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    Color(red: 156/255, green: 156/255, blue: 156/255),
+                                    Color(red: 54/255, green: 54/255, blue: 54/255)
+                                ]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                    Text("如沫春风")
+                        .font(Font.system(size: 24, weight: .bold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    Color(red: 156/255, green: 156/255, blue: 156/255),
+                                    Color(red: 54/255, green: 54/255, blue: 54/255)
+                                ]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .bold()
+                        .foregroundColor(Color(red: 98/255, green: 98/255, blue: 98/255))
+                        .foregroundColor(.black)
+                        .padding(.top, 1)
+                    HStack {
+                        Image("100")
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("潮湿度")
+                                Text("评分")
+                            }
+                            .bold()
+                            .foregroundColor(Color(red: 98/255, green: 98/255, blue: 98/255))
+                            .padding(.top, 0.5)
+
+                            HStack {
+                                Text("56.1%")
+                                Text("87%")
+                            }
+                            .bold()
+                            .foregroundColor(Color(red: 98/255, green: 98/255, blue: 98/255))
+                        }
+                    }
+                }
+            .padding()
+            .background(Color.white)
         }
+        .edgesIgnoringSafeArea(.all)
+        .background(Color.white)
     }
 }
 
@@ -57,7 +110,7 @@ struct widget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             widgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .containerBackground(.white, for: .widget)
         }
     }
     
