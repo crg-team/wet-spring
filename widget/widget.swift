@@ -7,6 +7,7 @@
 
 import WidgetKit
 import SwiftUI
+import CoreLocation
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -45,9 +46,14 @@ struct widgetEntryView : View {
             Color.white
 
             VStack(alignment: .leading) {
-                    Image("WidgetBackground")
-                        .frame(height: 49.18)
-                        .foregroundColor(.white)
+                    HStack {
+                        Image("Emoji")
+                            .frame(width: 89)
+                            .foregroundColor(.white)
+                        Image("100")
+                            .frame(width: 32,height: 49)
+                            .foregroundColor(.white)
+                    }
                     Text("现在开窗体验")
                         .font(Font.system(size: 12, weight: .bold))
                         .foregroundStyle(
@@ -75,9 +81,7 @@ struct widgetEntryView : View {
                         .bold()
                         .foregroundColor(Color(red: 98/255, green: 98/255, blue: 98/255))
                         .foregroundColor(.black)
-                        .padding(.top, 1)
                     HStack {
-                        Image("100")
                         VStack(alignment: .leading) {
                             HStack {
                                 Text("潮湿度")
