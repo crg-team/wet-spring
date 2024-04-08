@@ -63,17 +63,20 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        let url = URL(string: "http://localhost:3000/114.73,22.79")!
+        let url = URL(string: "http://localhost:3000/")!
         let (data, _) = try! await URLSession.shared.data(from: url)
         let weatherData = try! JSONDecoder().decode(WeatherData.self, from: data)
 
         let now = Date()
         let currentHour = Calendar.current.component(.hour, from: now)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH"
+        let formattedCurrentHour = formatter.string(from: now)
 
+        print("Current hour (UTC)-》》》》: \(formattedCurrentHour)")
         print("Current time: \(now)")
-        print("Current hour (UTC): \(currentHour)")
 
-        if let currentHumidityIndex = weatherData.hourly.firstIndex(where: { $0.fxTime.contains("\(currentHour):00") }) {
+        if let currentHumidityIndex = weatherData.hourly.firstIndex(where: { $0.fxTime.contains("\(formattedCurrentHour):00") }) {
             let currentEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: weatherData.hourly[currentHumidityIndex])
 
             print("Found matching hourly data:")
