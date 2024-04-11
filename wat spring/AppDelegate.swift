@@ -42,6 +42,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
     
     func fetchWeatherData(latitude: String, longitude: String, completion: @escaping (HourlyData) -> Void) {
         let urlString = "http://localhost:3000/\(longitude),\(latitude)"
+        
+        
+        
+        
+        
+        
+        
+        // AppDelegate.swift
+        let userDefaults = UserDefaults.init(suiteName: "test")
+        userDefaults!.setValue("defaultID", forKey: "id")
+        userDefaults!.setValue("defauleName", forKey: "name")
+        
+        
         guard let url = URL(string: urlString) else { return }
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in

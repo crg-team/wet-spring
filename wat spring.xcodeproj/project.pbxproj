@@ -19,8 +19,8 @@
 		D773A01F2BABF86B003B416D /* widgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A01E2BABF86B003B416D /* widgetBundle.swift */; };
 		D773A0232BABF86B003B416D /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A0222BABF86B003B416D /* AppIntent.swift */; };
 		D773A0252BABF86C003B416D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D773A0242BABF86C003B416D /* Assets.xcassets */; };
-		D773A02B2BABF86C003B416D /* widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D773A0172BABF86B003B416D /* widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D773A02F2BABFB13003B416D /* widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773A0202BABF86B003B416D /* widget.swift */; };
+		D78F68132BC769D200B2CF10 /* widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D773A0172BABF86B003B416D /* widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D79838892BA4FDE3005C7F9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79838882BA4FDE3005C7F9C /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,11 +51,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		D773A02A2BABF86C003B416D /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				D773A02B2BABF86C003B416D /* widgetExtension.appex in Embed Foundation Extensions */,
+				D78F68132BC769D200B2CF10 /* widgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,6 +534,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
@@ -546,10 +547,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "wat spring/wat_spring.entitlements";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wat spring/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -560,6 +565,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "no.wat-spring";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -572,10 +578,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "wat spring/wat_spring.entitlements";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wat spring/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -586,6 +596,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "no.wat-spring";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};

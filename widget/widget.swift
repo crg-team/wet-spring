@@ -7,7 +7,6 @@
 
 import WidgetKit
 import SwiftUI
-import CoreLocation
 
 struct WeatherData: Codable {
     let hourly: [HourlyData]
@@ -63,9 +62,19 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        let url = URL(string: "http://localhost:3000/")!
+        
+        
+        // widget.swift
+        let userDefaults = UserDefaults(suiteName: "test")
+        let id = userDefaults?.string(forKey: "longitudes")
+        print("timeline:  \(id)")
+        
+        
+        
+        let url = URL(string: "http://localhost:3000/114.73,22.79")!
         let (data, _) = try! await URLSession.shared.data(from: url)
         let weatherData = try! JSONDecoder().decode(WeatherData.self, from: data)
+        
 
         let now = Date()
         let currentHour = Calendar.current.component(.hour, from: now)
