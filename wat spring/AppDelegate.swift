@@ -43,16 +43,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
     func fetchWeatherData(latitude: String, longitude: String, completion: @escaping (HourlyData) -> Void) {
         let urlString = "http://localhost:3000/\(longitude),\(latitude)"
         
-        
-        
-        
-        
-        
-        
-        // AppDelegate.swift
-        let userDefaults = UserDefaults.init(suiteName: "test")
-        userDefaults!.setValue("defaultID", forKey: "id")
-        userDefaults!.setValue("defauleName", forKey: "name")
+        let userDefaults = UserDefaults.init(suiteName: "group.com.cc.nospring")
+        userDefaults!.setValue(longitude, forKey: "longitude")
+        userDefaults!.setValue(latitude, forKey: "latitude")
         
         
         guard let url = URL(string: urlString) else { return }
@@ -63,7 +56,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, CLLocationManagerDelegate {
                     let decoder = JSONDecoder()
                     let weatherData = try decoder.decode(WeatherData.self, from: data)
                     
-                    // 计算平均湿度和温度
                     let totalHumidity = weatherData.hourly.reduce(0) { $0 + Double($1.humidity)! }
                     let averageHumidity = totalHumidity / Double(weatherData.hourly.count)
                     

@@ -62,16 +62,22 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
+
+        var weatherUrl: URL?
+        if let userDefaults = UserDefaults(suiteName: "group.com.cc.nospring"),
+           let unwrappedLongitude = userDefaults.string(forKey: "longitude"),
+           let unwrappedLatitude = userDefaults.string(forKey: "latitude") {
+            let coordinates = "\(unwrappedLongitude),\(unwrappedLatitude)"
+            weatherUrl = URL(string: "http://localhost:3000/\(coordinates)")!
+        } else {
+            print("No saved longitude and/or latitude.")
+            return Timeline(entries: [], policy: .never)
+        }
+
+        guard let url = weatherUrl else {
+            return Timeline(entries: [], policy: .never)
+        }
         
-        
-        // widget.swift
-        let userDefaults = UserDefaults(suiteName: "test")
-        let id = userDefaults?.string(forKey: "longitudes")
-        print("timeline:  \(id)")
-        
-        
-        
-        let url = URL(string: "http://localhost:3000/114.73,22.79")!
         let (data, _) = try! await URLSession.shared.data(from: url)
         let weatherData = try! JSONDecoder().decode(WeatherData.self, from: data)
         
@@ -82,16 +88,8 @@ struct Provider: AppIntentTimelineProvider {
         formatter.dateFormat = "HH"
         let formattedCurrentHour = formatter.string(from: now)
 
-        print("Current hour (UTC)-》》》》: \(formattedCurrentHour)")
-        print("Current time: \(now)")
-
         if let currentHumidityIndex = weatherData.hourly.firstIndex(where: { $0.fxTime.contains("\(formattedCurrentHour):00") }) {
             let currentEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: weatherData.hourly[currentHumidityIndex])
-
-            print("Found matching hourly data:")
-            print("  fxTime: \(currentEntry.hourlyData.fxTime)")
-            print("  Humidity: \(currentEntry.hourlyData.humidity)%")
-
             return Timeline(entries: [currentEntry], policy: .atEnd)
         } else {
             let emptyEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: ""))
