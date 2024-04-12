@@ -99,20 +99,25 @@ struct Provider: AppIntentTimelineProvider {
         let (data, _) = try! await URLSession.shared.data(from: url)
         let weatherData = try! JSONDecoder().decode(WeatherData.self, from: data)
         
-
         let now = Date()
-        let currentHour = Calendar.current.component(.hour, from: now)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH"
-        let formattedCurrentHour = formatter.string(from: now)
+        let beijingTimeZone = TimeZone(identifier: "Asia/Shanghai")
 
-        if let currentHumidityIndex = weatherData.hourly.firstIndex(where: { $0.fxTime.contains("\(formattedCurrentHour):00") }) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZZ"
+        formatter.timeZone = beijingTimeZone
+
+        let beijingNow = formatter.string(from: now)
+        formatter.dateFormat = "HH"
+        
+        let formattedCurrentHourBeijing = formatter.string(from: now)
+        if let currentHumidityIndex = weatherData.hourly.firstIndex(where: { $0.fxTime.contains("\(formattedCurrentHourBeijing):00") }) {
             let currentEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: weatherData.hourly[currentHumidityIndex])
             return Timeline(entries: [currentEntry], policy: .atEnd)
         } else {
             let emptyEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: "", text: "", windScale: "", cloud: "", precip: ""))
             return Timeline(entries: [emptyEntry], policy: .atEnd)
         }
+
     }
 }
 
@@ -196,17 +201,35 @@ struct widgetEntryView : View {
     }
     
     private func determineTextForConditions(_ hourlyData: HourlyData) -> String {
-        if isCloudyMoistWeatherConditions(hourlyData) {
-            return "云布雨润"
-        }
-        else if isSpringRainyWeatherConditions(hourlyData) {
-            return "春风化雨"
-        } else if isDesiredWeatherConditions(hourlyData) {
-            return "风和日丽"
-        } else {
+        switch hourlyData.text {
+        case "多云":
+            if isCloudyMoistWeatherConditions(hourlyData) {
+                return "云布雨润"
+            } else if isDesiredWeatherConditions(hourlyData) {
+                return "风和日丽"
+            } else {
+                return "听天由命"
+            }
+        case "晴", "多云":
+            if isSpringRainyWeatherConditions(hourlyData) {
+                return "春风化雨"
+            } else if isDesiredWeatherConditions(hourlyData) {
+                return "风和日丽"
+            } else {
+                return "听天由命"
+            }
+        case "雨", "雪", "雷阵雨":
+            if isSpringRainyWeatherConditions(hourlyData) {
+                return "春季降雨"
+            } else {
+                return "听天由命"
+            }
+        default:
             return "听天由命"
         }
     }
+
+
     // is spring?
     func isCurrentSeasonSpring() -> Bool {
         let currentDate = Date()
@@ -222,36 +245,71 @@ struct widgetEntryView : View {
         return currentDate >= springEquinox && currentDate < summerSolstice
     }
 
+    // 通用条件判断
+    private func isValueInRange<T: Comparable>(_ value: T, lowerBound: T, upperBound: T) -> Bool {
+        return value >= lowerBound && value <= upperBound
+    }
+
+    // 湿度是否在范围内
+    private func isHumidityInRange(_ hourlyData: HourlyData, lowerBound: Int, upperBound: Int) -> Bool {
+        guard let humidity = Int(hourlyData.humidity) else { return false }
+        return isValueInRange(humidity, lowerBound: lowerBound, upperBound: upperBound)
+    }
+
+    // 温度是否在范围内
+    private func isTemperatureInRange(_ hourlyData: HourlyData, lowerBound: Double, upperBound: Double) -> Bool {
+        guard let temperature = Double(hourlyData.temp) else { return false }
+        return isValueInRange(temperature, lowerBound: lowerBound, upperBound: upperBound)
+    }
+
+    // 风速是否在范围内
+    private func isWindSpeedInRange(_ hourlyData: HourlyData, lowerBound: Int, upperBound: Int) -> Bool {
+        guard let windSpeed = Int(hourlyData.windSpeed) else { return false }
+        return isValueInRange(windSpeed, lowerBound: lowerBound, upperBound: upperBound)
+    }
+
+    // 降水量是否在范围内
+    private func isPrecipitationInRange(_ hourlyData: HourlyData, lowerBound: Double, upperBound: Double) -> Bool {
+        guard let precipitation = Double(hourlyData.precip) else { return false }
+        return isValueInRange(precipitation, lowerBound: lowerBound, upperBound: upperBound)
+    }
+
+    // 露点与气温差值是否在范围内
+    private func isDewPointNearTemperature(_ hourlyData: HourlyData, maxDifference: Double) -> Bool {
+        guard let temp = Double(hourlyData.temp), let dew = Double(hourlyData.dew) else { return false }
+        return abs(temp - dew) <= maxDifference
+    }
+    
     // 云布雨润：多云、湿度 80~100%、温度 15~25、露点接近或略低于气温、无雨或微量雨（0或0.1毫米）、风速 0~3级
     private func isCloudyMoistWeatherConditions(_ hourlyData: HourlyData) -> Bool {
         let isCloudy = hourlyData.text == "多云"
-        let humidityInRange = Int(hourlyData.humidity)! >= 80 && Int(hourlyData.humidity)! <= 100
-        let tempInRange = Double(hourlyData.temp)! >= 15 && Double(hourlyData.temp)! <= 25
-        let dewNearTemp = abs(Double(hourlyData.temp)! - Double(hourlyData.dew)!) <= 2
-        let lightOrNoPrecipitation = Double(hourlyData.precip)! == 0 || (Double(hourlyData.precip)! >= 0 && Double(hourlyData.precip)! <= 0.1)
-        let windSpeedInRange = Int(hourlyData.windSpeed)! >= 0 && Int(hourlyData.windSpeed)! <= 3
+        let isHumidityOk = isHumidityInRange(hourlyData, lowerBound: 80, upperBound: 100)
+        let isTempOk = isTemperatureInRange(hourlyData, lowerBound: 15, upperBound: 25)
+        let isDewNearTemp = isDewPointNearTemperature(hourlyData, maxDifference: 2)
+        let isLightOrNoPrecipitation = isPrecipitationInRange(hourlyData, lowerBound: 0, upperBound: 0.1)
+        let isWindSpeedOk = isWindSpeedInRange(hourlyData, lowerBound: 0, upperBound: 3)
 
-        return isCloudy && humidityInRange && tempInRange && dewNearTemp && lightOrNoPrecipitation && windSpeedInRange
+        return isCloudy && isHumidityOk && isTempOk && isDewNearTemp && isLightOrNoPrecipitation && isWindSpeedOk
     }
-    
+
     // 春风化雨：有0.1至25毫米的降雨量，风力为0~3级，湿度30~50%，且为晴或多云天气
     private func isSpringRainyWeatherConditions(_ hourlyData: HourlyData) -> Bool {
         let isSpring = isCurrentSeasonSpring()
-        let isLightRainfall = Double(hourlyData.precip)! >= 0.1 && Double(hourlyData.precip)! <= 25
+        let isLightRainfall = isPrecipitationInRange(hourlyData, lowerBound: 0.1, upperBound: 25)
         let isClearToCloudy = hourlyData.text == "晴" || hourlyData.text == "多云"
+        let isDesiredConditionsMet = isDesiredWeatherConditions(hourlyData)
 
-        return isSpring && isLightRainfall && isClearToCloudy && isDesiredWeatherConditions(hourlyData)
+        return isSpring && isLightRainfall && isClearToCloudy && isDesiredConditionsMet
     }
-    
-    //  风和日丽：晴天、无风~微风（0-3)、湿度 30~50
+
+    // 风和日丽：晴天、无风~微风（0-3)、湿度 30~50
     private func isDesiredWeatherConditions(_ hourlyData: HourlyData) -> Bool {
         let isClearSky = hourlyData.text == "晴"
-        let windScaleInRange = Int(hourlyData.windScale)! >= 0 && Int(hourlyData.windScale)! <= 3
-        let humidityInRange = Int(hourlyData.humidity)! >= 30 && Int(hourlyData.humidity)! <= 50
+        let isWindScaleInRange = isWindSpeedInRange(hourlyData, lowerBound: 0, upperBound: 3)
+        let isHumidityInRange = isHumidityInRange(hourlyData, lowerBound: 30, upperBound: 50)
 
-        return isClearSky && windScaleInRange && humidityInRange
+        return isClearSky && isWindScaleInRange && isHumidityInRange
     }
-    
 }
 
 struct widget: Widget {
