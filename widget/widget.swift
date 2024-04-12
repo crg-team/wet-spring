@@ -7,10 +7,24 @@
 
 import WidgetKit
 import SwiftUI
+import Foundation
 
 struct WeatherData: Codable {
     let hourly: [HourlyData]
 }
+
+/*  https://dev.qweather.com/docs/api/grid-weather/grid-weather-hourly-forecast/
+ *  fxLink          数据时间
+ *  temp            温度单位摄氏度
+ *  humidity        相对湿度
+ *  wind360         风向 360 角度
+ *  windSpeed       风速，公里 / 小时
+ *  dew             露点温度
+ *  text            天气状况的文字描述
+ *  windScale       风力等级
+ *  cloud           云量
+ *  precip          降雨量
+ */
 
 struct HourlyData: Codable {
     let fxTime: String
@@ -19,6 +33,10 @@ struct HourlyData: Codable {
     let wind360: String
     let windSpeed: String
     let dew: String
+    let text: String
+    let windScale: String
+    let cloud : String
+    let precip : String
 }
 
 func calculateBackSouthProbability(hourlyData: HourlyData) -> Double {
@@ -48,11 +66,11 @@ func calculateBackSouthProbability(hourlyData: HourlyData) -> Double {
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: ""))
+        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: "", text: "", windScale: "", cloud: "", precip: ""))
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration, hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: ""))
+        SimpleEntry(date: Date(), configuration: configuration, hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: "", text: "", windScale: "", cloud: "", precip: ""))
     }
 
     struct SimpleEntry: TimelineEntry {
@@ -92,7 +110,7 @@ struct Provider: AppIntentTimelineProvider {
             let currentEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: weatherData.hourly[currentHumidityIndex])
             return Timeline(entries: [currentEntry], policy: .atEnd)
         } else {
-            let emptyEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: ""))
+            let emptyEntry = SimpleEntry(date: now, configuration: configuration, hourlyData: HourlyData(fxTime: "", temp: "", humidity: "", wind360: "", windSpeed: "", dew: "", text: "", windScale: "", cloud: "", precip: ""))
             return Timeline(entries: [emptyEntry], policy: .atEnd)
         }
     }
@@ -139,7 +157,7 @@ struct widgetEntryView : View {
                                 endPoint: .trailing
                             )
                         )
-                    Text("朝云暮雨")
+                    Text(determineTextForConditions(entry.hourlyData))
                         .font(Font.system(size: 24, weight: .bold))
                         .foregroundStyle(
                             LinearGradient(
@@ -176,6 +194,64 @@ struct widgetEntryView : View {
         .edgesIgnoringSafeArea(.all)
         .background(Color.white)
     }
+    
+    private func determineTextForConditions(_ hourlyData: HourlyData) -> String {
+        if isCloudyMoistWeatherConditions(hourlyData) {
+            return "云布雨润"
+        }
+        else if isSpringRainyWeatherConditions(hourlyData) {
+            return "春风化雨"
+        } else if isDesiredWeatherConditions(hourlyData) {
+            return "风和日丽"
+        } else {
+            return "听天由命"
+        }
+    }
+    // is spring?
+    func isCurrentSeasonSpring() -> Bool {
+        let currentDate = Date()
+        let calendar = Calendar(identifier: .gregorian)
+
+        let currentYear = calendar.component(.year, from: currentDate)
+
+        // 定义春分和夏至的日期
+        let springEquinox = calendar.date(from: DateComponents(year: currentYear, month: 3, day: 20))!
+        let summerSolstice = calendar.date(from: DateComponents(year: currentYear, month: 6, day: 21))!
+
+        // 判断当前日期是否在春分与夏至之间
+        return currentDate >= springEquinox && currentDate < summerSolstice
+    }
+
+    // 云布雨润：多云、湿度 80~100%、温度 15~25、露点接近或略低于气温、无雨或微量雨（0或0.1毫米）、风速 0~3级
+    private func isCloudyMoistWeatherConditions(_ hourlyData: HourlyData) -> Bool {
+        let isCloudy = hourlyData.text == "多云"
+        let humidityInRange = Int(hourlyData.humidity)! >= 80 && Int(hourlyData.humidity)! <= 100
+        let tempInRange = Double(hourlyData.temp)! >= 15 && Double(hourlyData.temp)! <= 25
+        let dewNearTemp = abs(Double(hourlyData.temp)! - Double(hourlyData.dew)!) <= 2
+        let lightOrNoPrecipitation = Double(hourlyData.precip)! == 0 || (Double(hourlyData.precip)! >= 0 && Double(hourlyData.precip)! <= 0.1)
+        let windSpeedInRange = Int(hourlyData.windSpeed)! >= 0 && Int(hourlyData.windSpeed)! <= 3
+
+        return isCloudy && humidityInRange && tempInRange && dewNearTemp && lightOrNoPrecipitation && windSpeedInRange
+    }
+    
+    // 春风化雨：有0.1至25毫米的降雨量，风力为0~3级，湿度30~50%，且为晴或多云天气
+    private func isSpringRainyWeatherConditions(_ hourlyData: HourlyData) -> Bool {
+        let isSpring = isCurrentSeasonSpring()
+        let isLightRainfall = Double(hourlyData.precip)! >= 0.1 && Double(hourlyData.precip)! <= 25
+        let isClearToCloudy = hourlyData.text == "晴" || hourlyData.text == "多云"
+
+        return isSpring && isLightRainfall && isClearToCloudy && isDesiredWeatherConditions(hourlyData)
+    }
+    
+    //  风和日丽：晴天、无风~微风（0-3)、湿度 30~50
+    private func isDesiredWeatherConditions(_ hourlyData: HourlyData) -> Bool {
+        let isClearSky = hourlyData.text == "晴"
+        let windScaleInRange = Int(hourlyData.windScale)! >= 0 && Int(hourlyData.windScale)! <= 3
+        let humidityInRange = Int(hourlyData.humidity)! >= 30 && Int(hourlyData.humidity)! <= 50
+
+        return isClearSky && windScaleInRange && humidityInRange
+    }
+    
 }
 
 struct widget: Widget {
