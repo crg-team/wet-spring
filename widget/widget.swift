@@ -150,7 +150,7 @@ struct widgetEntryView : View {
                             .frame(width: 32,height: 49)
                             .foregroundColor(.white)
                     }
-                    Text("现在开窗感受")
+                    Text(getWindowInstructionText(hourlyData: entry.hourlyData))
                         .font(Font.system(size: 12, weight: .bold))
                         .foregroundStyle(
                             LinearGradient(
@@ -228,8 +228,7 @@ struct widgetEntryView : View {
             return "听天由命"
         }
     }
-
-
+        
     // is spring?
     func isCurrentSeasonSpring() -> Bool {
         let currentDate = Date()
@@ -244,6 +243,7 @@ struct widgetEntryView : View {
         // 判断当前日期是否在春分与夏至之间
         return currentDate >= springEquinox && currentDate < summerSolstice
     }
+    
 
     // 通用条件判断
     private func isValueInRange<T: Comparable>(_ value: T, lowerBound: T, upperBound: T) -> Bool {
@@ -278,6 +278,32 @@ struct widgetEntryView : View {
     private func isDewPointNearTemperature(_ hourlyData: HourlyData, maxDifference: Double) -> Bool {
         guard let temp = Double(hourlyData.temp), let dew = Double(hourlyData.dew) else { return false }
         return abs(temp - dew) <= maxDifference
+    }
+    
+    
+    private func getWindowInstructionText(hourlyData: HourlyData) -> String {
+        if shouldCloseWindow(hourlyData: hourlyData) {
+            return "现在关窗体验"
+        } else {
+            return "现在开窗感受"
+        }
+    }
+    
+    // 关窗：风力 6 级、回南天概率\湿度大于 60且为春天、当前气温 10 °以下
+    private func shouldCloseWindow(hourlyData: HourlyData) -> Bool {
+        let windScaleIsSix = Int(hourlyData.windScale)! == 6
+
+        let calculatedBackSouthProb = calculateBackSouthProbability(hourlyData: hourlyData)
+        let backSouthProbInPercentage = Int(calculatedBackSouthProb * 100)
+        let backSouthProbAboveSixty = backSouthProbInPercentage >= 60
+        let humidityIsSixty = Int(hourlyData.humidity)! >= 60
+        let isSpring = isCurrentSeasonSpring()
+
+        let springAndBackSouthProbAboveSixtyAndHumidityIsSixty = isSpring && backSouthProbAboveSixty && humidityIsSixty
+        let tempBelowTen = Double(hourlyData.temp)! <= 10
+        let closeWindowCondition = windScaleIsSix || tempBelowTen || springAndBackSouthProbAboveSixtyAndHumidityIsSixty
+
+        return closeWindowCondition
     }
     
     // 云布雨润：多云、湿度 80~100%、温度 15~25、露点接近或略低于气温、无雨或微量雨（0或0.1毫米）、风速 0~3级
